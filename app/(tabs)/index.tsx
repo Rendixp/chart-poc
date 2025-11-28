@@ -1,98 +1,134 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import { useState } from 'react';
+import { Button, Text, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { LineChart } from "react-native-gifted-charts";
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+  const dataA = [
+    { value: 15 },
+    { value: 30 },
+    { value: 26 },
+    { value: 75 },
+    { value: 15 },
+    { value: 28 },
+    { value: 22 },
+    { value: 40 },
+    { value: 55 },
+    { value: 75 },
+    { value: 15 },
+    { value: 28 },
+    { value: 22 },
+    { value: 40 },
+    { value: 22 },
+    { value: 40 },
+    { value: 22 },
+    { value: 40 },
+    { value: 30 },
+    { value: 25 },
+    { value: 22 },
+    { value: 40 },
+    { value: 50 },
+  ];
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+  const dataB = [
+    { value: 20 }, { value: 15 }, { value: 35 }, { value: 65 },
+    { value: 25 }, { value: 40 }, { value: 18 }, { value: 55 },
+    { value: 52 }, { value: 60 }, { value: 10 }, { value: 18 },
+    { value: 30 }, { value: 20 }, { value: 30 }, { value: 25 },
+    { value: 50 }, { value: 55 }, { value: 75 }, { value: 15 },
+  ];
+
+  const [currentData, setCurrentData] = useState(dataA);
+
+  // const largeData = Array.from({ length: 500 }, (_, i) => ({
+  //   value: Math.floor(20 + Math.random() * 80),
+  //   x: `P${i + 1}`,
+  // }));
+
+  return (
+    <ScrollView>
+      <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center', gap: 40, marginBottom: 40 }}>
+        <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginTop: 40 }}>
+          Gifted Charts
+        </Text>
+
+        <LineChart
+          areaChart
+          animateOnDataChange
+          scrollToEnd
+          initialSpacing={0}
+          endSpacing={0}
+          data={currentData}
+          color="#FFC107"
+          startFillColor="#FFB347"
+          startOpacity={0.8}
+          endFillColor="#FFB347"
+          endOpacity={0.1}
+          width={350}
+          spacing={25}
+          // spacing={3}
+          hideDataPoints
+          hideYAxisText
+          yAxisColor={"transparent"}
+          xAxisColor={"transparent"}
+          pointerConfig={{
+            activatePointersOnLongPress: false,
+            pointerStripHeight: 180,
+            pointerStripUptoDataPoint: true,
+            pointerLabelComponent: (items: { value: string }[]) => {
+              console.log('Pointer Items:', items);
+              return (
+                <View style={{ padding: 6, backgroundColor: 'black', borderRadius: 6, width: 30 }}>
+                  <Text style={{ color: 'white' }}>{items[0].value}</Text>
+                </View>
+              );
+            },
+          }}
+        />
+
+        <Button
+          title="Change Data to Test Animation"
+          onPress={() => setCurrentData(currentData === dataA ? dataB : dataA)}
+        />
+
+        <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginTop: 40 }}>
+          Gifted Charts with multiple indices
+        </Text>
+
+        <LineChart
+          areaChart
+          animateOnDataChange
+          scrollToEnd
+          initialSpacing={0}
+          endSpacing={0}
+          data={dataA}
+          data2={dataB}
+          color1="#FFC107"
+          color2="#03A9F4"
+          startFillColor="#FFB347"
+          startFillColor2="#81D4FA"
+          startOpacity={0.8}
+          endFillColor="#FFB347"
+          endFillColor2="#81D4FA"
+          endOpacity={0.1}
+          width={350}
+          spacing={40}
+          hideDataPoints
+          pointerConfig={{
+            activatePointersOnLongPress: false,
+            pointerStripHeight: 180,
+            pointerStripUptoDataPoint: true,
+            pointerLabelComponent: (items: { value: string }[]) => {
+              console.log('Pointer Items:', items);
+              return (
+                <View style={{ padding: 6, backgroundColor: 'black', borderRadius: 6, width: 30 }}>
+                  <Text style={{ color: 'white' }}>{items[0].value}</Text>
+                </View>
+              );
+            },
+          }}
+        />
+      </View>
+    </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
