@@ -1,5 +1,5 @@
 # How to Run Demo App
 
-- Bun Install
+- Install dependency by Running `Bun Install`
 - Make sure you have android/ios emulator on your device
-- bunx expo run:android / run:ios
+- Run the app with `bunx expo run:android` or `bunx expo run:ios`
