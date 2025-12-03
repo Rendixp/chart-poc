@@ -5,7 +5,7 @@ export const SINGLE_INDEX_DATA_1H = Array.from({ length: 24 }, (_, i) => ({
 }));
 
 // Daily data (last 180 days / about 6 months)
-export const SINGLE_INDEX_DATA_1D = Array.from({ length: 180 }, (_, i) => ({
+export const SINGLE_INDEX_DATA_1D = Array.from({ length: 2000 }, (_, i) => ({
   value: Math.floor(10 + Math.random() * 80),
   x: `D${i + 1}`,
 }));
