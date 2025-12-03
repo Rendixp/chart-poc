@@ -1,6 +1,7 @@
+import { VICTORY_DATA, VICTORY_DATA2 } from "@/constants/victoryChartData";
 import { LinearGradient, SkFont, Text as SkiaText, useFont, vec } from "@shopify/react-native-skia";
-import * as React from "react";
-import { ScrollView, Text, View } from "react-native";
+import { useState } from "react";
+import { Button, ScrollView, Text, View } from "react-native";
 import { useDerivedValue, type SharedValue } from "react-native-reanimated";
 import { Area, CartesianChart, PointsArray, useChartPressState } from "victory-native";
 
@@ -9,6 +10,8 @@ export default function VictoryScreen() {
   const { state: singleState, isActive: isSingleChartActive } = useChartPressState({ x: 0, y: { highTmp: 0 } });
   const { state } = useChartPressState({ x: 0, y: { highTmp: 0, other: 0 } });
   // const { state } = useChartPressState({ x: 0, y: { highTmp: 0, other: 0, other2: 0, other3: 0, other4: 0, } });
+
+  const [singleData, setSingleData] = useState(VICTORY_DATA)
 
   const DATA = Array.from({ length: 365 }, (_, i) => ({
     day: i,
@@ -38,7 +41,7 @@ export default function VictoryScreen() {
 
           <View style={{ height: 300, width: "100%", paddingBottom: 50 }}>
             <CartesianChart
-              data={DATA}
+              data={singleData}
               xKey="day"
               yKeys={["highTmp"]}
               domainPadding={{ top: 30, right: 30 }}
@@ -81,6 +84,11 @@ export default function VictoryScreen() {
               }}
             </CartesianChart>
           </View>
+
+          <Button
+            title="Change Data to Test Animation"
+            onPress={() => setSingleData(singleData === VICTORY_DATA ? VICTORY_DATA2 : VICTORY_DATA)}
+          />
         </View>
       </View>
 
